@@ -1,0 +1,16 @@
+name: XPShop
+author: TobyDev265
+version: 1.0.0
+description: Buy and sell XP
+api: [3.0.0]
+main: TobyDev265\XPShop\Main
+
+commands:
+  xpshop:
+    description: XP Shop
+    permission: xpshop.cmd
+
+permissions:
+  xpshop.cmd:
+    description: Allow players to use xpshop command
+    default: true
