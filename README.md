@@ -1,3 +1,4 @@
+[![Build Status](https://www.travis-ci.com/TobyDev265/XPShop.svg?branch=main)](https://www.travis-ci.com/TobyDev265/XPShop)
 ![GitHub all releases](https://img.shields.io/github/downloads/TobyDev265/XPShop/total)
 ![GitHub](https://img.shields.io/github/license/TobyDev265/XPShop)
 # XPShop v1.0.0
