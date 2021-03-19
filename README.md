@@ -26,3 +26,5 @@ buySuccess: Bought!
 doNotEnoughMoney: You don't have enough money
 isNotANumber: XP must be number
 ```
+# LICENSE
+Released under the GPL-3.0 license.
