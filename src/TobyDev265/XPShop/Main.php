@@ -23,6 +23,15 @@ class Main extends PluginBase
         $this->saveDefaultConfig();
         $this->cfg = new Config($this->getDataFolder() . "config.yml", Config::YAML);
     }
+
+    /**
+     * @param CommandSender $sender
+     * @param Command $cmd
+     * @param string $label
+     * @param array $args
+     * @return bool
+     */
+
     public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args): bool
     {
         if ($cmd->getName() == "xpshop") {
