@@ -13,6 +13,8 @@ use pocketmine\utils\TextFormat as C;
 use jojoe77777\FormAPI\SimpleForm;
 use jojoe77777\FormAPI\CustomForm;
 
+use JackMD\UpdateNotifier\UpdateNotifier;
+
 use onebone\economyapi\EconomyAPI;
 
 class Main extends PluginBase
@@ -22,6 +24,7 @@ class Main extends PluginBase
         @mkdir($this->getDataFolder());
         $this->saveDefaultConfig();
         $this->cfg = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+        UpdateNotifier::checkUpdate("XPShop", "1.0.1");
     }
 
     /**
