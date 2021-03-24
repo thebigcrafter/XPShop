@@ -24,7 +24,7 @@ class Main extends PluginBase
         @mkdir($this->getDataFolder());
         $this->saveDefaultConfig();
         $this->cfg = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-        UpdateNotifier::checkUpdate("XPShop", "1.0.1");
+        UpdateNotifier::checkUpdate("XPShop", "1.0.0");
     }
 
     /**
@@ -55,8 +55,8 @@ class Main extends PluginBase
                         }
                     });
                     $form->setTitle($this->cfg->get("title"));
-                    $form->addButton($this->cfg->get("sell_button"));
-                    $form->addButton($this->cfg->get("buy_button"));
+                    $form->addButton($this->cfg->get("sell_button"), 1, "https://raw.githubusercontent.com/TobyDev265/XPShop/main/assets/sell.png");
+                    $form->addButton($this->cfg->get("buy_button"), 1, "https://raw.githubusercontent.com/TobyDev265/XPShop/main/assets/buy.png");
                     $sender->sendForm($form);
                 }
             }
