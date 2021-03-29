@@ -19,6 +19,12 @@ use onebone\economyapi\EconomyAPI;
 
 class Main extends PluginBase
 {
+    /**
+     * @var Config
+     */
+    
+    private $cfg;
+
     public function onEnable()
     {
         @mkdir($this->getDataFolder());
