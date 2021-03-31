@@ -30,7 +30,7 @@ class Main extends PluginBase
         @mkdir($this->getDataFolder());
         $this->saveDefaultConfig();
         $this->cfg = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-        UpdateNotifier::checkUpdate("XPShop", "1.0.0");
+        UpdateNotifier::checkUpdate("XPShop", "1.0.3");
     }
 
     /**
