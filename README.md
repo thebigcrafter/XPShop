@@ -1,4 +1,4 @@
-[![Build Status](https://www.travis-ci.com/MintoD/XPShop.svg?branch=main)](https://www.travis-ci.com/TobyDev265/XPShop)
+[![Build Status](https://www.travis-ci.com/MintoD/XPShop.svg?branch=main)](https://www.travis-ci.com/MintoD/XPShop)
 ![GitHub all releases](https://img.shields.io/github/downloads/MintoD/XPShop/total)
 [![](https://poggit.pmmp.io/shield.state/XPShop)](https://poggit.pmmp.io/p/XPShop)
 [![](https://poggit.pmmp.io/shield.dl.total/XPShop)](https://poggit.pmmp.io/p/XPShop)
