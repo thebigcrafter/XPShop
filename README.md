@@ -1,5 +1,5 @@
-[![Build Status](https://www.travis-ci.com/TobyDev265/XPShop.svg?branch=main)](https://www.travis-ci.com/TobyDev265/XPShop)
-![GitHub all releases](https://img.shields.io/github/downloads/TobyDev265/XPShop/total)
+[![Build Status](https://www.travis-ci.com/MintoD/XPShop.svg?branch=main)](https://www.travis-ci.com/TobyDev265/XPShop)
+![GitHub all releases](https://img.shields.io/github/downloads/MintoD/XPShop/total)
 [![](https://poggit.pmmp.io/shield.state/XPShop)](https://poggit.pmmp.io/p/XPShop)
 [![](https://poggit.pmmp.io/shield.dl.total/XPShop)](https://poggit.pmmp.io/p/XPShop)
 [![Discord](https://img.shields.io/discord/821713643170430978.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/dXZNYu2yxx)
