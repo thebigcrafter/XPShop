@@ -3,13 +3,13 @@ sell_button: Sell
 buy_button: Buy
 
 sell_title: Sell XP
-sell_slider_label: Please choose XP to sell
+slider_label: Please choose XP to sell
 
 buy_title: Buy EXP
-buy_slider_label: Please choose XP to buy
+input_label: Please type XP to buy
 
 xpPriceWhenSell: 10 # 1 XP level = 10$ when sell
-xpPriceWhenBuy: 9 # 1 XP level = 9$ when buy
+xpPriceWhenBuy: 9 # 1 XP level = 10$ when buy
 
 sellSuccess: Sold!
 buySuccess: Bought!

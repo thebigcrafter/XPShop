@@ -1,6 +1,6 @@
 name: XPShop
 author: TobyDev265
-version: 1.0.5
+version: 1.0.3
 description: Buy and sell XP
 api: [3.0.0]
 main: TobyDev265\XPShop\Main
