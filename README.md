@@ -6,26 +6,11 @@
 # XPShop v1.0.4
 **Buy and sell XP.**  
 ``NOTE!`` Make sure EconomyAPI is installed.
-# Config
-```yaml
-title: XP Shop
-sell_button: Sell
-buy_button: Buy
-
-sell_title: Sell XP
-sell_slider_label: Please choose XP to sell
-
-buy_title: Buy EXP
-buy_slider_label: Please choose XP to buy
-
-xpPriceWhenSell: 10 # 1 XP level = 10$ when sell
-xpPriceWhenBuy: 9 # 1 XP level = 9$ when buy
-
-sellSuccess: Sold!
-buySuccess: Bought!
-
-doNotEnoughMoney: You don't have enough money
-isNotANumber: XP must be number
-```
+# Installation
+- Download from Poggit
+  - Download plugin from <a href="https://poggit.pmmp.io/p/XPShop/">here.</a>
+  - Move it to PocketMine plugin folder.
+- Using Sheep
+  - ```install XPShop```
 # License
 Released under the GPL-3.0 license.
