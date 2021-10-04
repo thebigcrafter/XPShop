@@ -14,5 +14,4 @@ xpPriceWhenBuy: 9 # 1 XP level = 9$ when buy
 sellSuccess: Sold!
 buySuccess: Bought!
 
-doNotEnoughMoney: You don't have enough money
-isNotANumber: XP must be number
+xpTooLow: Your XP is too low to sell!

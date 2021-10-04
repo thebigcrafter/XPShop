@@ -1,9 +1,9 @@
 name: XPShop
 author: MintoD
-version: 1.0.4
+version: 1.1.0
 description: Buy and sell XP
 api: [3.0.0]
-main: TobyDev265\XPShop\Main
+main: MintoD\XPShop\Main
 
 commands:
   xpshop:
@@ -12,5 +12,5 @@ commands:
 
 permissions:
   xpshop.cmd:
-    description: Allow players to use xpshop command
-    default: true
+    description: Allow players to use XPShop command
+    default: op
