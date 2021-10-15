@@ -1,15 +1,31 @@
-[![Build Status](https://www.travis-ci.com/MintoD/XPShop.svg?branch=main)](https://www.travis-ci.com/MintoD/XPShop)
-![GitHub all releases](https://img.shields.io/github/downloads/MintoD/XPShop/total)
 [![](https://poggit.pmmp.io/shield.state/XPShop)](https://poggit.pmmp.io/p/XPShop)
+[![](https://poggit.pmmp.io/shield.api/XPShop)](https://poggit.pmmp.io/p/XPShop)
 [![](https://poggit.pmmp.io/shield.dl.total/XPShop)](https://poggit.pmmp.io/p/XPShop)
-# XPShop v1.1.0
-**Buy and sell XP.**  
-``NOTE!`` Make sure EconomyAPI is installed.
+
+<div align="center">
+  <a href="https://github.com/MintoD/SilkyBlocks">
+    <img src="https://raw.githubusercontent.com/MintoD/XPShop/main/icon.png" alt="Logo" width="100" height="100">
+  </a>
+
+<h3 align="center">XPShop</h3>
+
+  <p align="center">
+    Buy and sell XP
+    <br />
+    <a href="https://github.com/MintoD/XPShop/releases">Releases</a>
+    ·
+    <a href="https://github.com/MintoD/XPShop/issues">Report Bug</a>
+  </p>
+</div>
+
 # Installation
-- Download from Poggit
+## Download from Poggit
   - Download plugin from <a href="https://poggit.pmmp.io/p/XPShop/">here.</a>
   - Move it to PocketMine plugin folder.
-- Using Sheep
+  - Reload your server
+## Using Sheep (may not work)
   - ```install XPShop```
 # License
-Released under the GPL-3.0 license.
+Copyright (c) MintoD. All rights reserved.
+
+Licensed under the [GPL-3.0](https://github.com/MintoD/XPShop/blob/main/LICENSE) license.
