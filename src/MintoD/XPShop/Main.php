@@ -25,6 +25,7 @@ namespace MintoD\XPShop;
 use JackMD\UpdateNotifier\UpdateNotifier;
 use jojoe77777\FormAPI\CustomForm;
 use jojoe77777\FormAPI\SimpleForm;
+use MintoD\libMCUnicodeChars\libMCUnicodeChars;
 use onebone\economyapi\EconomyAPI;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -68,9 +69,9 @@ class Main extends PluginBase
                             break;
                     }
                 });
-                $selectionForm->setTitle($this->cfg->get("title"));
-                $selectionForm->addButton($this->cfg->get("sell_button"));
-                $selectionForm->addButton($this->cfg->get("buy_button"));
+                $selectionForm->setTitle($this->replace($this->cfg->get("title")));
+                $selectionForm->addButton($this->replace($this->cfg->get("sell_button")));
+                $selectionForm->addButton($this->replace($this->cfg->get("buy_button")));
                 $sender->sendForm($selectionForm);
             }
         }
@@ -84,16 +85,16 @@ class Main extends PluginBase
                 return;
             }
             if ($player->getXpLevel() <= 0) {
-                $player->sendMessage($this->cfg->get("xpToLow"));
+                $player->sendMessage($this->replace($this->cfg->get("xpTooLow")));
             } else {
                 $money = $data[0] * $this->cfg->get("xpPriceWhenSell");
                 $player->setXpLevel((int)floor($player->getXpLevel() - $data[0]));
                 EconomyAPI::getInstance()->addMoney($player, $money);
-                $player->sendMessage($this->cfg->get("sellSuccess"));
+                $player->sendMessage($this->replace($this->cfg->get("sellSuccess")));
             }
         });
-        $form->setTitle($this->cfg->get("sell_title"));
-        $form->addSlider($this->cfg->get("sell_slider_label"), 1, $player->getXpLevel());
+        $form->setTitle($this->replace($this->cfg->get("sell_title")));
+        $form->addSlider($this->replace($this->cfg->get("sell_slider_label")), 1, $player->getXpLevel());
         $player->sendForm($form);
     }
 
@@ -106,10 +107,14 @@ class Main extends PluginBase
             $money = $data[0] * $this->cfg->get("xpPriceWhenBuy");
             $player->setXpLevel((int)floor($player->getXpLevel() + $data[0]));
             EconomyAPI::getInstance()->reduceMoney($player, $money);
-            $player->sendMessage($this->cfg->get("buySuccess"));
+            $player->sendMessage($this->replace($this->cfg->get("buySuccess")));
         });
-        $form->setTitle($this->cfg->get("buy_title"));
-        $form->addSlider($this->cfg->get("buy_slider_label"), 1, (int)floor(EconomyAPI::getInstance()->myMoney($player) / $this->cfg->get("xpPriceWhenBuy")) - 1);
+        $form->setTitle($this->replace($this->cfg->get("buy_title")));
+        $form->addSlider($this->replace($this->cfg->get("buy_slider_label")), 1, (int)floor(EconomyAPI::getInstance()->myMoney($player) / $this->cfg->get("xpPriceWhenBuy")) - 1);
         $player->sendForm($form);
+    }
+    
+    private function replace(string $str): string {
+        return libMCUnicodeChars::replace($str);
     }
 }
