@@ -75,8 +75,9 @@ class Main extends PluginBase
                 $selectionForm->addButton($this->replace($this->cfg->get("buy_button")));
                 $sender->sendForm($selectionForm);
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     private function sellForm(Player $player): void
