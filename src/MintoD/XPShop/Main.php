@@ -42,7 +42,7 @@ class Main extends PluginBase
 
     public function onEnable(): void
     {
-        UpdateNotifier::checkUpdate("XPShop", "1.2.0");
+        UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
         $this->saveDefaultConfig();
         $this->cfg = new Config($this->getDataFolder() . "config.yml", Config::YAML);
     }
