@@ -2,6 +2,7 @@ name: XPShop
 author: MintoD
 version: 1.2.0
 description: Buy and sell XP
+depend: BedrockEconomy
 api: 4.0.0
 main: MintoD\XPShop\Main
 
