@@ -41,7 +41,7 @@ class Main extends PluginBase
 
     private Config $cfg;
 
-    public function onEnable(): void
+    protected function onEnable(): void
     {
         UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
         $this->saveDefaultConfig();
