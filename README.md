@@ -1,6 +1,6 @@
-[![](https://poggit.pmmp.io/shield.state/XPShop)](https://poggit.pmmp.io/p/XPShop)
-[![](https://poggit.pmmp.io/shield.api/XPShop)](https://poggit.pmmp.io/p/XPShop)
-[![](https://poggit.pmmp.io/shield.dl.total/XPShop)](https://poggit.pmmp.io/p/XPShop)
+[![State](https://poggit.pmmp.io/shield.state/XPShop)](https://poggit.pmmp.io/p/XPShop)
+[![API](https://poggit.pmmp.io/shield.api/XPShop)](https://poggit.pmmp.io/p/XPShop)
+[![Downloads Total](https://poggit.pmmp.io/shield.dl.total/XPShop)](https://poggit.pmmp.io/p/XPShop)
 
 <div align="center">
   <a href="https://github.com/MintoD/SilkyBlocks">
@@ -23,8 +23,10 @@
   - Download plugin from <a href="https://poggit.pmmp.io/p/XPShop/">here.</a>
   - Move it to PocketMine plugin folder.
   - Reload your server
-## Using Sheep (may not work)
-  - ```install XPShop```
+## Using oh-my-pmmp
+```shell
+install XPShop latest
+```
 # License
 Copyright (c) MintoD. All rights reserved.
 
