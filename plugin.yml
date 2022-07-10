@@ -1,6 +1,6 @@
 name: XPShops
 author: MintoD
-version: 1.2.0
+version: 2.0.0
 description: Buy and sell XP
 api: [4.0.0]
 main: MintoD\XPShop\Main
