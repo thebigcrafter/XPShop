@@ -4,7 +4,7 @@ version: 1.2.0
 description: Buy and sell XP
 api: 4.0.0
 main: MintoD\XPShop\Main
-depends: [BedrockEconomy]
+depend: [BedrockEconomy]
 
 commands:
   xpshop:
