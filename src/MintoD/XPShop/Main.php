@@ -112,7 +112,6 @@ class Main extends PluginBase
                             return;
                         }
                         $money = $data[0] * $this->cfg->get("xpPriceWhenBuy");
-                        var_dump($money, (int)$money);
                         BedrockEconomyAPI::legacy()->subtractFromPlayerBalance($player->getName(), (int)$money);
                         $player->getXpManager()->addXpLevels((int)floor($data[0]));
                         $player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("buySuccess"))));
