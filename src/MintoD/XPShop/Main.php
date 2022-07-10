@@ -91,7 +91,7 @@ class Main extends PluginBase
             } else {
                 $money = $data[0] * $this->cfg->get("xpPriceWhenSell");
                 $player->getXpManager()->subtractXpLevels((int)floor($data[0]));
-                BedrockEconomyAPI::getInstance()->addToPlayerBalance($player->getName(), intval($money));
+                BedrockEconomyAPI::getInstance()->addToPlayerBalance($player->getName(), (int)$money);
                 $player->sendMessage($this->replace($this->cfg->get("sellSuccess")));
             }
         });
@@ -112,7 +112,7 @@ class Main extends PluginBase
                         }
                         $money = $data[0] * $this->cfg->get("xpPriceWhenBuy");
                         $player->getXpManager()->addXpLevels((int)floor($data[0]));
-                        BedrockEconomyAPI::legacy()->subtractFromPlayerBalance($player->getName(), intval($money));
+                        BedrockEconomyAPI::legacy()->subtractFromPlayerBalance($player->getName(), (int)$money);
                         $player->sendMessage($this->replace($this->cfg->get("buySuccess")));
                     });
                     $form->setTitle($this->replace($this->cfg->get("buy_title")));
