@@ -26,10 +26,12 @@ use JackMD\UpdateNotifier\UpdateNotifier;
 use jojoe77777\FormAPI\CustomForm;
 use jojoe77777\FormAPI\SimpleForm;
 use MintoD\libMCUnicodeChars\libMCUnicodeChars;
-use onebone\economyapi\EconomyAPI;
+use cooldogedev\BedrockEconomy\api\BedrockEconomyAPI;
+use cooldogedev\BedrockEconomy\libs\cooldogedev\libSQL\context\ClosureContext;
+use Exception;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
@@ -41,7 +43,7 @@ class Main extends PluginBase
 
     public function onEnable(): void
     {
-        UpdateNotifier::checkUpdate("XPShop", "1.1.0");
+        UpdateNotifier::checkUpdate("XPShop", "1.2.0");
         $this->saveDefaultConfig();
         $this->cfg = new Config($this->getDataFolder() . "config.yml", Config::YAML);
     }
@@ -49,13 +51,13 @@ class Main extends PluginBase
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
     {
         if ($command->getName() == "xpshop") {
-            if ($sender->hasPermission("xpshop.cmd") || $sender->isOp()) {
+            if ($sender->hasPermission("xpshop.cmd") || $this->getServer()->isOp($sender->getName())) {
                 if (!$sender instanceof Player) {
                     $sender->sendMessage(TextFormat::DARK_RED . "Please use this command in-game!");
                     return true;
                 }
 
-                $selectionForm = new SimpleForm(function (Player $player, int $data = null) {
+                $selectionForm = new SimpleForm(function (Player $player, ?int $data = null) {
                     if ($data === null) {
                         return;
                     }
@@ -80,38 +82,45 @@ class Main extends PluginBase
 
     private function sellForm(Player $player): void
     {
-        $form = new CustomForm(function (Player $player, array $data = null) {
+        $form = new CustomForm(function (Player $player, ?array $data = null) {
             if ($data === null) {
                 return;
             }
-            if ($player->getXpLevel() <= 0) {
+            if ($player->getXpManager()->getXpLevel() <= 0) {
                 $player->sendMessage($this->replace($this->cfg->get("xpTooLow")));
             } else {
                 $money = $data[0] * $this->cfg->get("xpPriceWhenSell");
-                $player->setXpLevel((int)floor($player->getXpLevel() - $data[0]));
-                EconomyAPI::getInstance()->addMoney($player, $money);
+                $player->getXpManager()->subtractXpLevels((int)floor($data[0]));
+                BedrockEconomyAPI::getInstance()->addToPlayerBalance($player->getName(), intval($money));
                 $player->sendMessage($this->replace($this->cfg->get("sellSuccess")));
             }
         });
         $form->setTitle($this->replace($this->cfg->get("sell_title")));
-        $form->addSlider($this->replace($this->cfg->get("sell_slider_label")), 1, $player->getXpLevel());
+        $form->addSlider($this->replace($this->cfg->get("sell_slider_label")), 1, $player->getXpManager()->getXpLevel());
         $player->sendForm($form);
     }
 
     private function buyForm(Player $player): void
     {
-        $form = new CustomForm(function (Player $player, array $data = null) {
-            if ($data === null) {
-                return;
-            }
-            $money = $data[0] * $this->cfg->get("xpPriceWhenBuy");
-            $player->setXpLevel((int)floor($player->getXpLevel() + $data[0]));
-            EconomyAPI::getInstance()->reduceMoney($player, $money);
-            $player->sendMessage($this->replace($this->cfg->get("buySuccess")));
-        });
-        $form->setTitle($this->replace($this->cfg->get("buy_title")));
-        $form->addSlider($this->replace($this->cfg->get("buy_slider_label")), 1, (int)floor(EconomyAPI::getInstance()->myMoney($player) / $this->cfg->get("xpPriceWhenBuy")) - 1);
-        $player->sendForm($form);
+        BedrockEconomyAPI::legacy()->getPlayerBalance(
+            $player->getName(),
+            ClosureContext::create(
+                function (?int $balance) use ($player): void {
+                    $form = new CustomForm(function (Player $player, ?array $data = null) {
+                        if ($data === null) {
+                            return;
+                        }
+                        $money = $data[0] * $this->cfg->get("xpPriceWhenBuy");
+                        $player->getXpManager()->addXpLevels((int)floor($data[0]));
+                        BedrockEconomyAPI::legacy()->subtractFromPlayerBalance($player->getName(), intval($money));
+                        $player->sendMessage($this->replace($this->cfg->get("buySuccess")));
+                    });
+                    $form->setTitle($this->replace($this->cfg->get("buy_title")));
+                    $form->addSlider($this->replace($this->cfg->get("buy_slider_label")), 1, (int)floor($balance / $this->cfg->get("xpPriceWhenBuy")) - 1);
+                    $player->sendForm($form);
+                },
+            )
+        );
     }
     
     private function replace(string $str): string {
