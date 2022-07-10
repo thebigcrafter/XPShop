@@ -53,7 +53,7 @@ class Main extends PluginBase
         if ($command->getName() == "xpshop") {
             if ($sender->hasPermission("xpshop.cmd") || $sender->hasPermission(DefaultPermissions::ROOT_OPERATOR)) {
                 if (!$sender instanceof Player) {
-                    $sender->sendMessage(TextFormat::DARK_RED . "Please use this command in-game!");
+                    $sender->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("messages_console"))));
                     return true;
                 }
 
@@ -71,9 +71,9 @@ class Main extends PluginBase
                             break;
                     }
                 });
-                $selectionForm->setTitle($this->replace($this->cfg->get("title")));
-                $selectionForm->addButton($this->replace($this->cfg->get("sell_button")));
-                $selectionForm->addButton($this->replace($this->cfg->get("buy_button")));
+                $selectionForm->setTitle(TextFormat::colorize($this->replace($this->cfg->get("title"))));
+                $selectionForm->addButton(TextFormat::colorize($this->replace($this->cfg->get("sell_button"))));
+                $selectionForm->addButton(TextFormat::colorize($this->replace($this->cfg->get("buy_button"))));
                 $sender->sendForm($selectionForm);
             }
             return true;
@@ -88,16 +88,16 @@ class Main extends PluginBase
                 return;
             }
             if ($player->getXpManager()->getXpLevel() <= 0) {
-                $player->sendMessage($this->replace($this->cfg->get("xpTooLow")));
+                $player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("xpTooLow"))));
             } else {
                 $money = $data[0] * $this->cfg->get("xpPriceWhenSell");
                 $player->getXpManager()->subtractXpLevels((int)floor($data[0]));
                 BedrockEconomyAPI::getInstance()->addToPlayerBalance($player->getName(), (int)$money);
-                $player->sendMessage($this->replace($this->cfg->get("sellSuccess")));
+                $player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("sellSuccess"))));
             }
         });
-        $form->setTitle($this->replace($this->cfg->get("sell_title")));
-        $form->addSlider($this->replace($this->cfg->get("sell_slider_label")), 1, $player->getXpManager()->getXpLevel());
+        $form->setTitle(TextFormat::colorize($this->replace($this->cfg->get("sell_title"))));
+        $form->addSlider(TextFormat::colorize($this->replace($this->cfg->get("sell_slider_label"))), 1, $player->getXpManager()->getXpLevel());
         $player->sendForm($form);
     }
 
@@ -112,12 +112,13 @@ class Main extends PluginBase
                             return;
                         }
                         $money = $data[0] * $this->cfg->get("xpPriceWhenBuy");
-                        $player->getXpManager()->addXpLevels((int)floor($data[0]));
+                        var_dump($money, (int)$money);
                         BedrockEconomyAPI::legacy()->subtractFromPlayerBalance($player->getName(), (int)$money);
-                        $player->sendMessage($this->replace($this->cfg->get("buySuccess")));
+                        $player->getXpManager()->addXpLevels((int)floor($data[0]));
+                        $player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("buySuccess"))));
                     });
-                    $form->setTitle($this->replace($this->cfg->get("buy_title")));
-                    $form->addSlider($this->replace($this->cfg->get("buy_slider_label")), 1, (int)floor($balance / $this->cfg->get("xpPriceWhenBuy")) - 1);
+                    $form->setTitle(TextFormat::colorize($this->replace($this->cfg->get("buy_title"))));
+                    $form->addSlider(TextFormat::colorize($this->replace($this->cfg->get("buy_slider_label"))), 1, (int)floor($balance / $this->cfg->get("xpPriceWhenBuy")) - 1);
                     $player->sendForm($form);
                 },
             )

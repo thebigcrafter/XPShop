@@ -15,3 +15,5 @@ sellSuccess: "Sold!"
 buySuccess: "Bought!"
 
 xpTooLow: "Your XP is too low to sell!"
+
+messages_console: "You must be a player to use this command!"
