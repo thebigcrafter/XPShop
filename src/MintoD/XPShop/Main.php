@@ -28,7 +28,6 @@ use jojoe77777\FormAPI\SimpleForm;
 use MintoD\libMCUnicodeChars\libMCUnicodeChars;
 use cooldogedev\BedrockEconomy\api\BedrockEconomyAPI;
 use cooldogedev\BedrockEconomy\libs\cooldogedev\libSQL\context\ClosureContext;
-use Exception;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
@@ -122,8 +121,9 @@ class Main extends PluginBase
             )
         );
     }
-    
-    private function replace(string $str): string {
+
+    private function replace(string $str): string
+    {
         return libMCUnicodeChars::replace($str);
     }
 }
