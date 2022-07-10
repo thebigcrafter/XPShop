@@ -34,6 +34,7 @@ use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
+use pocketmine\permission\DefaultPermissions;
 
 class Main extends PluginBase
 {
@@ -50,7 +51,7 @@ class Main extends PluginBase
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
     {
         if ($command->getName() == "xpshop") {
-            if ($sender->hasPermission("xpshop.cmd") || $this->getServer()->isOp($sender->getName())) {
+            if ($sender->hasPermission("xpshop.cmd") || $sender->hasPermission(DefaultPermissions::ROOT_OPERATOR)) {
                 if (!$sender instanceof Player) {
                     $sender->sendMessage(TextFormat::DARK_RED . "Please use this command in-game!");
                     return true;
