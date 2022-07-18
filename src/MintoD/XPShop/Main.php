@@ -30,6 +30,8 @@ use jojoe77777\FormAPI\SimpleForm;
 use MintoD\libMCUnicodeChars\libMCUnicodeChars;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\entity\Attribute;
+use pocketmine\entity\AttributeFactory;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
@@ -116,8 +118,12 @@ class Main extends PluginBase
 						$player->getXpManager()->addXpLevels((int) floor($data[0]));
 						$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("buySuccess"))));
 					});
+					// TODO: Clean Code
+					$attribute = (int) AttributeFactory::getInstance()->mustGet(Attribute::EXPERIENCE_LEVEL)->getMaxValue();
+					$result = (int) floor($balance / $this->cfg->get("xpPriceWhenBuy"));
+					$max = ($result > $attribute) ? $attribute : $result;
 					$form->setTitle(TextFormat::colorize($this->replace($this->cfg->get("buy_title"))));
-					$form->addSlider(TextFormat::colorize($this->replace($this->cfg->get("buy_slider_label"))), 1, (int) floor($balance / $this->cfg->get("xpPriceWhenBuy")) - 1);
+					$form->addSlider(TextFormat::colorize($this->replace($this->cfg->get("buy_slider_label"))), 0, $max);
 					$player->sendForm($form);
 				},
 			)
