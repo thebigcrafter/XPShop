@@ -118,12 +118,14 @@ class Main extends PluginBase
 						$player->getXpManager()->addXpLevels((int) floor($data[0]));
 						$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("buySuccess"))));
 					});
-					// TODO: Clean Code
+					// MAX XP
 					$attribute = (int) AttributeFactory::getInstance()->mustGet(Attribute::EXPERIENCE_LEVEL)->getMaxValue();
+					// RESULT
 					$result = (int) floor($balance / $this->cfg->get("xpPriceWhenBuy"));
+					// MAX SLIDER
 					$max = ($result > $attribute) ? $attribute : $result;
 					$form->setTitle(TextFormat::colorize($this->replace($this->cfg->get("buy_title"))));
-					$form->addSlider(TextFormat::colorize($this->replace($this->cfg->get("buy_slider_label"))), 0, $max);
+					$form->addSlider(TextFormat::colorize($this->replace($this->cfg->get("buy_slider_label"))), 0, $max - $player->getXpManager()->getXpLevel());
 					$player->sendForm($form);
 				},
 			)
