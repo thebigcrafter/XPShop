@@ -25,8 +25,8 @@ namespace MintoD\XPShop;
 use cooldogedev\BedrockEconomy\api\BedrockEconomyAPI;
 use cooldogedev\BedrockEconomy\libs\cooldogedev\libSQL\context\ClosureContext;
 use JackMD\UpdateNotifier\UpdateNotifier;
-use jojoe77777\FormAPI\CustomForm;
-use jojoe77777\FormAPI\SimpleForm;
+use Vecnavium\FormsUI\CustomForm;
+use Vecnavium\FormsUI\SimpleForm;
 use MintoD\libMCUnicodeChars\libMCUnicodeChars;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -127,6 +127,9 @@ class Main extends PluginBase
 				},
 			)
 		);
+	}
+
+	public function Hey(){
 	}
 
 	private function replace(string $str): string
