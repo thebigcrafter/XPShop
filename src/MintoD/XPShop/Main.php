@@ -129,9 +129,6 @@ class Main extends PluginBase
 		);
 	}
 
-	public function Hey(){
-	}
-
 	private function replace(string $str): string
 	{
 		return libMCUnicodeChars::replace($str);
