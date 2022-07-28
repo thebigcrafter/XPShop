@@ -22,12 +22,16 @@ declare(strict_types=1);
 
 namespace MintoD\XPShop;
 
-use JackMD\UpdateNotifier\UpdateNotifier;
+use DaPigGuy\libPiggyEconomy\exceptions\MissingProviderDependencyException;
+use DaPigGuy\libPiggyEconomy\exceptions\UnknownProviderException;
+use DaPigGuy\libPiggyEconomy\libPiggyEconomy;
+use DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
 use dktapps\pmforms\CustomForm;
+use dktapps\pmforms\CustomFormResponse;
+use dktapps\pmforms\element\Slider;
 use dktapps\pmforms\MenuForm;
 use dktapps\pmforms\MenuOption;
-use dktapps\pmforms\element\Slider;
-use dktapps\pmforms\CustomFormResponse;
+use JackMD\UpdateNotifier\UpdateNotifier;
 use MintoD\libMCUnicodeChars\libMCUnicodeChars;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -38,10 +42,6 @@ use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
-use DaPigGuy\libPiggyEconomy\exceptions\MissingProviderDependencyException;
-use DaPigGuy\libPiggyEconomy\exceptions\UnknownProviderException;
-use DaPigGuy\libPiggyEconomy\libPiggyEconomy;
-use DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
 
 class Main extends PluginBase
 {
