@@ -3,7 +3,7 @@
 [![Downloads Total](https://poggit.pmmp.io/shield.dl.total/XPShop)](https://poggit.pmmp.io/p/XPShop)
 
 <div align="center">
-  <a href="https://github.com/MintoD/SilkyBlocks">
+  <a href="https://github.com/thebigcrafter/XPShop">
     <img src="https://raw.githubusercontent.com/MintoD/XPShop/main/icon.png" alt="Logo" width="100" height="100">
   </a>
 
