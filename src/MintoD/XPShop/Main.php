@@ -22,8 +22,6 @@ declare(strict_types=1);
 
 namespace MintoD\XPShop;
 
-use cooldogedev\BedrockEconomy\api\BedrockEconomyAPI;
-use cooldogedev\BedrockEconomy\libs\cooldogedev\libSQL\context\ClosureContext;
 use JackMD\UpdateNotifier\UpdateNotifier;
 use dktapps\pmforms\CustomForm;
 use dktapps\pmforms\MenuForm;
@@ -40,17 +38,35 @@ use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
+use DaPigGuy\libPiggyEconomy\exceptions\MissingProviderDependencyException;
+use DaPigGuy\libPiggyEconomy\exceptions\UnknownProviderException;
+use DaPigGuy\libPiggyEconomy\libPiggyEconomy;
+use DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
 
 class Main extends PluginBase
 {
 
 	private Config $cfg;
 
+	/** @var EconomyProvider */
+	private $economyProvider;
+
+	/**
+	 * @throws MissingProviderDependencyException
+	 * @throws UnknownProviderException
+	 */
 	protected function onEnable(): void
 	{
 		UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
 		$this->saveDefaultConfig();
 		$this->cfg = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+		libPiggyEconomy::init();
+		$this->economyProvider = libPiggyEconomy::getProvider($this->getConfig()->get("economy"));
+	}
+
+	public function getEconomyProvider(): EconomyProvider
+	{
+		return $this->economyProvider;
 	}
 
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
@@ -77,6 +93,8 @@ class Main extends PluginBase
 							case 1:
 								$this->buyForm($sender);
 								break;
+							default:
+								return;
 						}
 					}
 				);
@@ -92,7 +110,7 @@ class Main extends PluginBase
 		$form = new CustomForm(
 			TextFormat::colorize($this->replace($this->cfg->get("sell_title"))),
 			[
-				new Slider("sell_slider_label", TextFormat::colorize($this->replace($this->cfg->get("sell_slider_label"))), 1, $player->getXpManager()->getXpLevel())
+				new Slider("sell_slider_label", TextFormat::colorize($this->replace($this->cfg->get("sell_slider_label"))), 0, $player->getXpManager()->getXpLevel())
 			],
 			function (Player $player, CustomFormResponse $response): void {
 				if ($player->getXpManager()->getXpLevel() <= 0) {
@@ -100,7 +118,7 @@ class Main extends PluginBase
 				} else {
 					$money = $response->getAll()["sell_slider_label"] * $this->cfg->get("xpPriceWhenSell");
 					$player->getXpManager()->subtractXpLevels((int) floor($response->getAll()["sell_slider_label"]));
-					BedrockEconomyAPI::getInstance()->addToPlayerBalance($player->getName(), (int) $money);
+					$this->getEconomyProvider()->giveMoney($player, (int) $money);
 					$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("sellSuccess"))));
 				}
 			}
@@ -110,29 +128,28 @@ class Main extends PluginBase
 
 	private function buyForm(Player $player): void
 	{
-		BedrockEconomyAPI::legacy()->getPlayerBalance(
-			$player->getName(),
-			ClosureContext::create(
-				function (?int $balance) use ($player): void {
-					$attribute = (int) AttributeFactory::getInstance()->mustGet(Attribute::EXPERIENCE_LEVEL)->getMaxValue();
-					$result = (int) floor($balance / $this->cfg->get("xpPriceWhenBuy"));
-					$max = ($result > $attribute) ? $attribute : $result;
-					$form = new CustomForm(
-						TextFormat::colorize($this->replace($this->cfg->get("buy_title"))),
-						[
-							new Slider("buy_slider_label", TextFormat::colorize($this->replace($this->cfg->get("buy_slider_label"))), 0, $max - $player->getXpManager()->getXpLevel())
-						],
-						function (Player $player, CustomFormResponse $response): void {
-							$money = $response->getAll()["buy_slider_label"] * $this->cfg->get("xpPriceWhenBuy");
-							BedrockEconomyAPI::legacy()->subtractFromPlayerBalance($player->getName(), (int) $money);
-							$player->getXpManager()->addXpLevels((int) floor($response->getAll()["buy_slider_label"]));
-							$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("buySuccess"))));
-						}
-					);
-					$player->sendForm($form);
-				},
-			)
-		);
+		$this->getEconomyProvider()->getMoney($player, function (float|int $balance) use ($player): void {
+			$attribute = (int) AttributeFactory::getInstance()->mustGet(Attribute::EXPERIENCE_LEVEL)->getMaxValue();
+			$result = (int) floor($balance / $this->cfg->get("xpPriceWhenBuy"));
+			$max = ($result > $attribute) ? $attribute : $result;
+			$form = new CustomForm(
+				TextFormat::colorize($this->replace($this->cfg->get("buy_title"))),
+				[
+					new Slider("buy_slider_label", TextFormat::colorize($this->replace($this->cfg->get("buy_slider_label"))), 0, $max - $player->getXpManager()->getXpLevel())
+				],
+				function (Player $player, CustomFormResponse $response): void {
+					if ($response->getAll()["buy_slider_label"] <= 0) {
+						$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("moneyTooLow"))));
+					} else {
+						$money = $response->getAll()["buy_slider_label"] * $this->cfg->get("xpPriceWhenBuy");
+						$this->getEconomyProvider()->takeMoney($player, (int) $money);
+						$player->getXpManager()->addXpLevels((int) floor($response->getAll()["buy_slider_label"]));
+						$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("buySuccess"))));
+					}
+				}
+			);
+			$player->sendForm($form);
+		});
 	}
 
 	private function replace(string $str): string

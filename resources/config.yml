@@ -8,12 +8,19 @@ sell_slider_label: "Please choose XP to sell"
 buy_title: "Buy EXP"
 buy_slider_label: "Please choose XP to buy"
 
-xpPriceWhenSell: 10 # 1 XP level = 10$ when sell
-xpPriceWhenBuy: 9 # 1 XP level = 9$ when buy
+xpPriceWhenSell: 5 # 1 XP level = 5$ when sell
+xpPriceWhenBuy: 10 # 1 XP level = 10$ when buy
 
 sellSuccess: "Sold!"
 buySuccess: "Bought!"
 
 xpTooLow: "Your XP is too low to sell!"
+moneyTooLow: "Your money is too low to buy!"
 
 messages_console: "You must be a player to use this command!"
+
+# Economy Options
+economy:
+  # Economy provider to use
+  # Supported options:  "bedrockeconomy", "economyapi", "xp"
+  provider: bedrockeconomy
