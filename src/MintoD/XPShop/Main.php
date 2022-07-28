@@ -25,8 +25,11 @@ namespace MintoD\XPShop;
 use cooldogedev\BedrockEconomy\api\BedrockEconomyAPI;
 use cooldogedev\BedrockEconomy\libs\cooldogedev\libSQL\context\ClosureContext;
 use JackMD\UpdateNotifier\UpdateNotifier;
-use Vecnavium\FormsUI\CustomForm;
-use Vecnavium\FormsUI\SimpleForm;
+use dktapps\pmforms\CustomForm;
+use dktapps\pmforms\MenuForm;
+use dktapps\pmforms\MenuOption;
+use dktapps\pmforms\element\Slider;
+use dktapps\pmforms\CustomFormResponse;
 use MintoD\libMCUnicodeChars\libMCUnicodeChars;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -59,23 +62,24 @@ class Main extends PluginBase
 					return true;
 				}
 
-				$selectionForm = new SimpleForm(function (Player $player, ?int $data = null) {
-					if ($data === null) {
-						return;
+				$selectionForm = new MenuForm(
+					TextFormat::colorize($this->replace($this->cfg->get("title"))),
+					"",
+					[
+						new MenuOption(TextFormat::colorize($this->replace($this->cfg->get("sell_button")))),
+						new MenuOption(TextFormat::colorize($this->replace($this->cfg->get("buy_button"))))
+					],
+					function (Player $sender, int $selected): void {
+						switch ($selected) {
+							case 0:
+								$this->sellForm($sender);
+								break;
+							case 1:
+								$this->buyForm($sender);
+								break;
+						}
 					}
-
-					switch ($data) {
-						case 0:
-							$this->sellForm($player);
-							break;
-						case 1:
-							$this->buyForm($player);
-							break;
-					}
-				});
-				$selectionForm->setTitle(TextFormat::colorize($this->replace($this->cfg->get("title"))));
-				$selectionForm->addButton(TextFormat::colorize($this->replace($this->cfg->get("sell_button"))));
-				$selectionForm->addButton(TextFormat::colorize($this->replace($this->cfg->get("buy_button"))));
+				);
 				$sender->sendForm($selectionForm);
 			}
 			return true;
@@ -85,21 +89,22 @@ class Main extends PluginBase
 
 	private function sellForm(Player $player): void
 	{
-		$form = new CustomForm(function (Player $player, ?array $data = null) {
-			if ($data === null) {
-				return;
+		$form = new CustomForm(
+			TextFormat::colorize($this->replace($this->cfg->get("sell_title"))),
+			[
+				new Slider("sell_slider_label", TextFormat::colorize($this->replace($this->cfg->get("sell_slider_label"))), 1, $player->getXpManager()->getXpLevel())
+			],
+			function (Player $player, CustomFormResponse $response): void {
+				if ($player->getXpManager()->getXpLevel() <= 0) {
+					$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("xpTooLow"))));
+				} else {
+					$money = $response->getAll()["sell_slider_label"] * $this->cfg->get("xpPriceWhenSell");
+					$player->getXpManager()->subtractXpLevels((int) floor($response->getAll()["sell_slider_label"]));
+					BedrockEconomyAPI::getInstance()->addToPlayerBalance($player->getName(), (int) $money);
+					$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("sellSuccess"))));
+				}
 			}
-			if ($player->getXpManager()->getXpLevel() <= 0) {
-				$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("xpTooLow"))));
-			} else {
-				$money = $data[0] * $this->cfg->get("xpPriceWhenSell");
-				$player->getXpManager()->subtractXpLevels((int) floor($data[0]));
-				BedrockEconomyAPI::getInstance()->addToPlayerBalance($player->getName(), (int) $money);
-				$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("sellSuccess"))));
-			}
-		});
-		$form->setTitle(TextFormat::colorize($this->replace($this->cfg->get("sell_title"))));
-		$form->addSlider(TextFormat::colorize($this->replace($this->cfg->get("sell_slider_label"))), 1, $player->getXpManager()->getXpLevel());
+		);
 		$player->sendForm($form);
 	}
 
@@ -109,20 +114,21 @@ class Main extends PluginBase
 			$player->getName(),
 			ClosureContext::create(
 				function (?int $balance) use ($player): void {
-					$form = new CustomForm(function (Player $player, ?array $data = null) {
-						if ($data === null) {
-							return;
-						}
-						$money = $data[0] * $this->cfg->get("xpPriceWhenBuy");
-						BedrockEconomyAPI::legacy()->subtractFromPlayerBalance($player->getName(), (int) $money);
-						$player->getXpManager()->addXpLevels((int) floor($data[0]));
-						$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("buySuccess"))));
-					});
 					$attribute = (int) AttributeFactory::getInstance()->mustGet(Attribute::EXPERIENCE_LEVEL)->getMaxValue();
 					$result = (int) floor($balance / $this->cfg->get("xpPriceWhenBuy"));
 					$max = ($result > $attribute) ? $attribute : $result;
-					$form->setTitle(TextFormat::colorize($this->replace($this->cfg->get("buy_title"))));
-					$form->addSlider(TextFormat::colorize($this->replace($this->cfg->get("buy_slider_label"))), 0, $max - $player->getXpManager()->getXpLevel());
+					$form = new CustomForm(
+						TextFormat::colorize($this->replace($this->cfg->get("buy_title"))),
+						[
+							new Slider("buy_slider_label", TextFormat::colorize($this->replace($this->cfg->get("buy_slider_label"))), 0, $max - $player->getXpManager()->getXpLevel())
+						],
+						function (Player $player, CustomFormResponse $response): void {
+							$money = $response->getAll()["buy_slider_label"] * $this->cfg->get("xpPriceWhenBuy");
+							BedrockEconomyAPI::legacy()->subtractFromPlayerBalance($player->getName(), (int) $money);
+							$player->getXpManager()->addXpLevels((int) floor($response->getAll()["buy_slider_label"]));
+							$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("buySuccess"))));
+						}
+					);
 					$player->sendForm($form);
 				},
 			)
