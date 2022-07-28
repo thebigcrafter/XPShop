@@ -24,3 +24,8 @@ economy:
   # Economy provider to use
   # Supported options:  "bedrockeconomy", "economyapi", "xp"
   provider: bedrockeconomy
+
+##### DANGER ZONE #####
+# Do not change this (Only for internal use)!
+config-version: "1.0.0"
+#######################

@@ -51,6 +51,19 @@ class Main extends PluginBase
 	/** @var EconomyProvider */
 	private $economyProvider;
 
+	private string $cfgVer = "1.0.0";
+
+	private function checkConfig(): void {
+		$configVersion = $this->getConfig()->exists("config-version") ? $this->getConfig()->get("config-version") : "0.0.0";
+		if (version_compare($configVersion, $this->cfgVer, "<>")) {
+			$this->getLogger()->notice("Your configuration file is invalid, updating the config.yml...");
+			$this->getLogger()->notice("Invalid configuration file can be found at config_invalid.yml");
+			rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "config_invalid.yml");
+			$this->saveDefaultConfig();
+			$this->getConfig()->reload();
+		}
+	}
+
 	/**
 	 * @throws MissingProviderDependencyException
 	 * @throws UnknownProviderException
@@ -60,6 +73,7 @@ class Main extends PluginBase
 		UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
 		$this->saveDefaultConfig();
 		$this->cfg = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+		$this->checkConfig();
 		libPiggyEconomy::init();
 		$this->economyProvider = libPiggyEconomy::getProvider($this->getConfig()->get("economy"));
 	}
