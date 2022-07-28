@@ -5,7 +5,6 @@ branches:
 projects:
   XPShop:
     path: ""
-    icon: icon.png
     libs:
     - src: Vecnavium/FormsUI/FormsUI
       version: ^1.1.2
