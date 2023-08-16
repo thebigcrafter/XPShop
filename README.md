@@ -4,7 +4,7 @@
 
 <div align="center">
   <a href="https://github.com/thebigcrafter/XPShop">
-    <img src="https://raw.githubusercontent.com/MintoD/XPShop/main/icon.png" alt="Logo" width="100" height="100">
+    <img src="https://raw.githubusercontent.com/thebigcrafter/XPShop/main/icon.png" alt="Logo" width="100" height="100">
   </a>
 
 <h3 align="center">XPShop</h3>
@@ -12,9 +12,9 @@
   <p align="center">
     Buy and sell XP
     <br />
-    <a href="https://github.com/MintoD/XPShop/releases">Releases</a>
+    <a href="https://github.com/thebigcrafter/XPShop/releases">Releases</a>
     ·
-    <a href="https://github.com/MintoD/XPShop/issues">Report Bug</a>
+    <a href="https://github.com/thebigcrafter/XPShop/issues">Report Bug</a>
   </p>
 </div>
 
@@ -30,4 +30,4 @@ install XPShop latest
 # License
 Copyright (c) MintoD. All rights reserved.
 
-Licensed under the [GPL-3.0](https://github.com/MintoD/XPShop/blob/main/LICENSE) license.
+Licensed under the [GPL-3.0](https://github.com/thebigcrafter/XPShop#GPL-3.0-1) license.
