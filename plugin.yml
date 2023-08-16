@@ -1,8 +1,8 @@
 name: XPShops
-author: MintoD
+authors: [MintoD, thebigcrafter]
 version: 2.0.0
 description: Buy and sell XP
-api: [4.0.0]
+api: [5.0.0]
 main: MintoD\XPShop\Main
 softdepend: ["BedrockEconomy", "EconomyAPI"]
 

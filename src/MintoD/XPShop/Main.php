@@ -31,8 +31,6 @@ use dktapps\pmforms\CustomFormResponse;
 use dktapps\pmforms\element\Slider;
 use dktapps\pmforms\MenuForm;
 use dktapps\pmforms\MenuOption;
-use JackMD\UpdateNotifier\UpdateNotifier;
-use MintoD\libMCUnicodeChars\libMCUnicodeChars;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Attribute;
@@ -40,64 +38,46 @@ use pocketmine\entity\AttributeFactory;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
-use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
+use thebigcrafter\Hydrogen\HConfig;
+use thebigcrafter\Hydrogen\Hydrogen;
+use tobydev27\libMCUnicodeChars\libMCUnicodeChars;
 
-class Main extends PluginBase
-{
-
-	private Config $cfg;
+class Main extends PluginBase {
 
 	/** @var EconomyProvider */
 	private $economyProvider;
-
-	private string $cfgVer = "1.0.0";
-
-	private function checkConfig(): void {
-		$configVersion = $this->getConfig()->exists("config-version") ? $this->getConfig()->get("config-version") : "0.0.0";
-		if (version_compare($configVersion, $this->cfgVer, "<>")) {
-			$this->getLogger()->notice("Your configuration file is invalid, updating the config.yml...");
-			$this->getLogger()->notice("Invalid configuration file can be found at config_invalid.yml");
-			rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "config_invalid.yml");
-			$this->saveDefaultConfig();
-			$this->getConfig()->reload();
-		}
-	}
 
 	/**
 	 * @throws MissingProviderDependencyException
 	 * @throws UnknownProviderException
 	 */
-	protected function onEnable(): void
-	{
-		UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
+	protected function onEnable(): void {
+		Hydrogen::checkForUpdates($this);
 		$this->saveDefaultConfig();
-		$this->cfg = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-		$this->checkConfig();
+		HConfig::verifyConfigVersion($this->getConfig(), "1.0.0");
 		libPiggyEconomy::init();
 		$this->economyProvider = libPiggyEconomy::getProvider($this->getConfig()->get("economy"));
 	}
 
-	public function getEconomyProvider(): EconomyProvider
-	{
+	public function getEconomyProvider(): EconomyProvider {
 		return $this->economyProvider;
 	}
 
-	public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
-	{
+	public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool {
 		if ($command->getName() == "xpshop") {
 			if ($sender->hasPermission("xpshop.cmd") || $sender->hasPermission(DefaultPermissions::ROOT_OPERATOR)) {
 				if (!$sender instanceof Player) {
-					$sender->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("messages_console"))));
+					$sender->sendMessage(TextFormat::colorize($this->replace($this->getConfig()->get("messages_console"))));
 					return true;
 				}
 
 				$selectionForm = new MenuForm(
-					TextFormat::colorize($this->replace($this->cfg->get("title"))),
+					TextFormat::colorize($this->replace($this->getConfig()->get("title"))),
 					"",
 					[
-						new MenuOption(TextFormat::colorize($this->replace($this->cfg->get("sell_button")))),
-						new MenuOption(TextFormat::colorize($this->replace($this->cfg->get("buy_button"))))
+						new MenuOption(TextFormat::colorize($this->replace($this->getConfig()->get("sell_button")))),
+						new MenuOption(TextFormat::colorize($this->replace($this->getConfig()->get("buy_button"))))
 					],
 					function (Player $sender, int $selected): void {
 						switch ($selected) {
@@ -119,46 +99,44 @@ class Main extends PluginBase
 		return false;
 	}
 
-	private function sellForm(Player $player): void
-	{
+	private function sellForm(Player $player): void {
 		$form = new CustomForm(
-			TextFormat::colorize($this->replace($this->cfg->get("sell_title"))),
+			TextFormat::colorize($this->replace($this->getConfig()->get("sell_title"))),
 			[
-				new Slider("sell_slider_label", TextFormat::colorize($this->replace($this->cfg->get("sell_slider_label"))), 0, $player->getXpManager()->getXpLevel())
+				new Slider("sell_slider_label", TextFormat::colorize($this->replace($this->getConfig()->get("sell_slider_label"))), 0, $player->getXpManager()->getXpLevel())
 			],
 			function (Player $player, CustomFormResponse $response): void {
 				if ($player->getXpManager()->getXpLevel() <= 0) {
-					$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("xpTooLow"))));
+					$player->sendMessage(TextFormat::colorize($this->replace($this->getConfig()->get("xpTooLow"))));
 				} else {
-					$money = $response->getAll()["sell_slider_label"] * $this->cfg->get("xpPriceWhenSell");
+					$money = $response->getAll()["sell_slider_label"] * $this->getConfig()->get("xpPriceWhenSell");
 					$player->getXpManager()->subtractXpLevels((int) floor($response->getAll()["sell_slider_label"]));
 					$this->getEconomyProvider()->giveMoney($player, (int) $money);
-					$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("sellSuccess"))));
+					$player->sendMessage(TextFormat::colorize($this->replace($this->getConfig()->get("sellSuccess"))));
 				}
 			}
 		);
 		$player->sendForm($form);
 	}
 
-	private function buyForm(Player $player): void
-	{
+	private function buyForm(Player $player): void {
 		$this->getEconomyProvider()->getMoney($player, function (float|int $balance) use ($player): void {
 			$attribute = (int) AttributeFactory::getInstance()->mustGet(Attribute::EXPERIENCE_LEVEL)->getMaxValue();
-			$result = (int) floor($balance / $this->cfg->get("xpPriceWhenBuy"));
+			$result = (int) floor($balance / $this->getConfig()->get("xpPriceWhenBuy"));
 			$max = ($result > $attribute) ? $attribute : $result;
 			$form = new CustomForm(
-				TextFormat::colorize($this->replace($this->cfg->get("buy_title"))),
+				TextFormat::colorize($this->replace($this->getConfig()->get("buy_title"))),
 				[
-					new Slider("buy_slider_label", TextFormat::colorize($this->replace($this->cfg->get("buy_slider_label"))), 0, $max - $player->getXpManager()->getXpLevel())
+					new Slider("buy_slider_label", TextFormat::colorize($this->replace($this->getConfig()->get("buy_slider_label"))), 0, $max - $player->getXpManager()->getXpLevel())
 				],
 				function (Player $player, CustomFormResponse $response): void {
 					if ($response->getAll()["buy_slider_label"] <= 0) {
-						$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("moneyTooLow"))));
+						$player->sendMessage(TextFormat::colorize($this->replace($this->getConfig()->get("moneyTooLow"))));
 					} else {
-						$money = $response->getAll()["buy_slider_label"] * $this->cfg->get("xpPriceWhenBuy");
+						$money = $response->getAll()["buy_slider_label"] * $this->getConfig()->get("xpPriceWhenBuy");
 						$this->getEconomyProvider()->takeMoney($player, (int) $money);
 						$player->getXpManager()->addXpLevels((int) floor($response->getAll()["buy_slider_label"]));
-						$player->sendMessage(TextFormat::colorize($this->replace($this->cfg->get("buySuccess"))));
+						$player->sendMessage(TextFormat::colorize($this->replace($this->getConfig()->get("buySuccess"))));
 					}
 				}
 			);
@@ -166,8 +144,7 @@ class Main extends PluginBase
 		});
 	}
 
-	private function replace(string $str): string
-	{
+	private function replace(string $str): string {
 		return libMCUnicodeChars::replace($str);
 	}
 }

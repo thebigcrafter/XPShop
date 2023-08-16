@@ -1,4 +1,4 @@
---- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/TobyDev265/XPShop
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/thebigcrafter/XPShop
 build-by-default: true
 branches:
 - main
@@ -7,11 +7,11 @@ projects:
     path: ""
     libs:
     - src: dktapps-pm-pl/pmforms/pmforms
-      version: ^2.0.0
-    - src: ifera-mc/UpdateNotifier/UpdateNotifier
-      version: ^3.0.0
+      version: ^2.1.0
+    - src: thebigcrafter/Hydrogen/Hydrogen
+      version: ^1.0.0
     - src: mintodev/libMCUnicodeChars/libMCUnicodeChars
       version: ^1.1.0
     - src: DaPigGuy/libPiggyEconomy/libPiggyEconomy
-      version: ^3.0.1
+      version: ^3.0.2
 ...
