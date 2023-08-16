@@ -1,6 +1,6 @@
 name: XPShops
 authors: [tobydev27, thebigcrafter]
-version: 2.0.0
+version: 2.1.0
 description: Buy and sell XP
 api: [5.0.0]
 main: tobydev27\XPShop\Main
