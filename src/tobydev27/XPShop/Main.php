@@ -10,7 +10,7 @@
  *                                 | |
  *                                 |_|
  *
- *  Copyright (C) 2021  MintoD
+ *  Copyright (C) 2021  tobydev27
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 declare(strict_types=1);
 
-namespace MintoD\XPShop;
+namespace tobydev27\XPShop;
 
 use DaPigGuy\libPiggyEconomy\exceptions\MissingProviderDependencyException;
 use DaPigGuy\libPiggyEconomy\exceptions\UnknownProviderException;

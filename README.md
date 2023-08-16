@@ -28,6 +28,6 @@
 install XPShop latest
 ```
 # License
-Copyright (c) MintoD. All rights reserved.
+Copyright (c) tobydev27. All rights reserved.
 
 Licensed under the [GPL-3.0](https://github.com/thebigcrafter/XPShop#GPL-3.0-1) license.
