@@ -19,14 +19,47 @@
 </div>
 
 # Installation
+
+XPShop targets PocketMine-MP API 5 and requires the virions declared by the
+Poggit manifest: [pmforms](https://github.com/dktapps-pm-pl/pmforms),
+[Hydrogen](https://github.com/thebigcrafter/Hydrogen),
+[libMCUnicodeChars](https://github.com/thebigcrafter/libMCUnicodeChars) and
+[libPiggyEconomy](https://github.com/DaPigGuy/libPiggyEconomy). Choose and
+install a supported economy provider before using the shop. The default
+configuration selects BedrockEconomy; EconomyAPI and the built-in XP provider
+are also documented in `resources/config.yml`.
+
 ## Download from Poggit
   - Download plugin from <a href="https://poggit.pmmp.io/p/XPShop/">here.</a>
   - Move it to PocketMine plugin folder.
-  - Reload your server
+  - Restart the server.
 ## Using oh-my-pmmp
 ```shell
 install XPShop latest
 ```
+
+# Usage and configuration
+
+Run `/xpshop` in game to open the buy/sell form. The `xpshop.cmd` permission
+defaults to operator. Console senders receive the configured console message
+instead of a form. After the first start, edit
+`plugin_data/XPShop/config.yml` to set prices, form labels, messages and the
+`economy.provider` value. The `config-version` field is managed by the plugin
+and should not be changed manually.
+
+# Development
+
+The repository keeps a locked Composer development setup for PHPStan. Run:
+
+```shell
+composer install
+composer run analyse
+```
+
+Poggit remains the packaging path for the plugin. DevTools is used by the
+packaging environment to assemble and validate the PHAR; this guide does not
+copy a builder revision that would become stale.
+
 # License
 Copyright (c) tobydev27. All rights reserved.
 
