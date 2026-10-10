@@ -4,6 +4,6 @@ virions:
   - name: Hydrogen
     version: ^1.0.0
   - name: libMCUnicodeChars
-    version: ^1.1.0
+    version: ^2.0.0
   - name: libPiggyEconomy
     version: ^3.0.2
