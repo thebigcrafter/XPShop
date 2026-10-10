@@ -7,11 +7,6 @@
         "phpstan/phpstan": "^2.1",
         "pocketmine/pocketmine-mp": "5.44.3"
     },
-    "autoload": {
-        "classmap": [
-            "src"
-        ]
-    },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse -c phpstan.neon.dist"
     }
