@@ -1,0 +1,9 @@
+parameters:
+    level: max
+    paths:
+        - src
+    scanDirectories:
+        - vendor/pocketmine/pocketmine-mp/src
+        - vendor/pocketmine/pocketmine-mp/generated
+    scanFiles:
+        - stubs/ThirdParty.php

@@ -68,16 +68,16 @@ class Main extends PluginBase {
 		if ($command->getName() == "xpshop") {
 			if ($sender->hasPermission("xpshop.cmd") || $sender->hasPermission(DefaultPermissions::ROOT_OPERATOR)) {
 				if (!$sender instanceof Player) {
-					$sender->sendMessage(TextFormat::colorize($this->replace($this->getConfig()->get("messages_console"))));
+					$sender->sendMessage(TextFormat::colorize($this->replace($this->configString("messages_console"))));
 					return true;
 				}
 
 				$selectionForm = new MenuForm(
-					TextFormat::colorize($this->replace($this->getConfig()->get("title"))),
+					TextFormat::colorize($this->replace($this->configString("title"))),
 					"",
 					[
-						new MenuOption(TextFormat::colorize($this->replace($this->getConfig()->get("sell_button")))),
-						new MenuOption(TextFormat::colorize($this->replace($this->getConfig()->get("buy_button"))))
+						new MenuOption(TextFormat::colorize($this->replace($this->configString("sell_button")))),
+						new MenuOption(TextFormat::colorize($this->replace($this->configString("buy_button"))))
 					],
 					function (Player $sender, int $selected): void {
 						switch ($selected) {
@@ -101,18 +101,19 @@ class Main extends PluginBase {
 
 	private function sellForm(Player $player): void {
 		$form = new CustomForm(
-			TextFormat::colorize($this->replace($this->getConfig()->get("sell_title"))),
+			TextFormat::colorize($this->replace($this->configString("sell_title"))),
 			[
-				new Slider("sell_slider_label", TextFormat::colorize($this->replace($this->getConfig()->get("sell_slider_label"))), 0, $player->getXpManager()->getXpLevel())
+				new Slider("sell_slider_label", TextFormat::colorize($this->replace($this->configString("sell_slider_label"))), 0, $player->getXpManager()->getXpLevel())
 			],
 			function (Player $player, CustomFormResponse $response): void {
 				if ($player->getXpManager()->getXpLevel() <= 0) {
-					$player->sendMessage(TextFormat::colorize($this->replace($this->getConfig()->get("xpTooLow"))));
+					$player->sendMessage(TextFormat::colorize($this->replace($this->configString("xpTooLow"))));
 				} else {
-					$money = $response->getAll()["sell_slider_label"] * $this->getConfig()->get("xpPriceWhenSell");
-					$player->getXpManager()->subtractXpLevels((int) floor($response->getAll()["sell_slider_label"]));
+					$xp = $this->responseNumber($response, "sell_slider_label");
+					$money = $xp * $this->configNumber("xpPriceWhenSell");
+					$player->getXpManager()->subtractXpLevels((int) floor($xp));
 					$this->getEconomyProvider()->giveMoney($player, (int) $money);
-					$player->sendMessage(TextFormat::colorize($this->replace($this->getConfig()->get("sellSuccess"))));
+					$player->sendMessage(TextFormat::colorize($this->replace($this->configString("sellSuccess"))));
 				}
 			}
 		);
@@ -122,26 +123,42 @@ class Main extends PluginBase {
 	private function buyForm(Player $player): void {
 		$this->getEconomyProvider()->getMoney($player, function (float|int $balance) use ($player): void {
 			$attribute = (int) AttributeFactory::getInstance()->mustGet(Attribute::EXPERIENCE_LEVEL)->getMaxValue();
-			$result = (int) floor($balance / $this->getConfig()->get("xpPriceWhenBuy"));
+			$result = (int) floor($balance / $this->configNumber("xpPriceWhenBuy"));
 			$max = ($result > $attribute) ? $attribute : $result;
 			$form = new CustomForm(
-				TextFormat::colorize($this->replace($this->getConfig()->get("buy_title"))),
+				TextFormat::colorize($this->replace($this->configString("buy_title"))),
 				[
-					new Slider("buy_slider_label", TextFormat::colorize($this->replace($this->getConfig()->get("buy_slider_label"))), 0, $max - $player->getXpManager()->getXpLevel())
+					new Slider("buy_slider_label", TextFormat::colorize($this->replace($this->configString("buy_slider_label"))), 0, $max - $player->getXpManager()->getXpLevel())
 				],
 				function (Player $player, CustomFormResponse $response): void {
-					if ($response->getAll()["buy_slider_label"] <= 0) {
-						$player->sendMessage(TextFormat::colorize($this->replace($this->getConfig()->get("moneyTooLow"))));
+					$xp = $this->responseNumber($response, "buy_slider_label");
+					if ($xp <= 0) {
+						$player->sendMessage(TextFormat::colorize($this->replace($this->configString("moneyTooLow"))));
 					} else {
-						$money = $response->getAll()["buy_slider_label"] * $this->getConfig()->get("xpPriceWhenBuy");
+						$money = $xp * $this->configNumber("xpPriceWhenBuy");
 						$this->getEconomyProvider()->takeMoney($player, (int) $money);
-						$player->getXpManager()->addXpLevels((int) floor($response->getAll()["buy_slider_label"]));
-						$player->sendMessage(TextFormat::colorize($this->replace($this->getConfig()->get("buySuccess"))));
+						$player->getXpManager()->addXpLevels((int) floor($xp));
+						$player->sendMessage(TextFormat::colorize($this->replace($this->configString("buySuccess"))));
 					}
 				}
 			);
 			$player->sendForm($form);
 		});
+	}
+
+	private function configString(string $key): string {
+		$value = $this->getConfig()->get($key);
+		return is_string($value) ? $value : "";
+	}
+
+	private function configNumber(string $key): float {
+		$value = $this->getConfig()->get($key);
+		return is_numeric($value) ? (float) $value : 0.0;
+	}
+
+	private function responseNumber(CustomFormResponse $response, string $key): float {
+		$value = $response->getAll()[$key] ?? null;
+		return is_numeric($value) ? (float) $value : 0.0;
 	}
 
 	private function replace(string $str): string {
