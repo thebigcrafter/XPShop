@@ -24,13 +24,16 @@ XPShop targets PocketMine-MP API 5 and requires the virions declared by the
 Poggit manifest: [pmforms](https://github.com/dktapps-pm-pl/pmforms),
 [Hydrogen](https://github.com/thebigcrafter/Hydrogen),
 [libMCUnicodeChars](https://github.com/thebigcrafter/libMCUnicodeChars) and
-[libPiggyEconomy](https://github.com/DaPigGuy/libPiggyEconomy). Choose and
+[libPiggyEconomy](https://github.com/thebigcrafter/libPiggyEconomy). The
+thebigcrafter fork contains the standalone-packaging fix for the built-in
+provider factory. Choose and
 install a supported economy provider before using the shop. The default
 configuration selects BedrockEconomy; EconomyAPI and the built-in XP provider
 are also documented in `resources/config.yml`.
 
-## Download from Poggit
-  - Download plugin from <a href="https://poggit.pmmp.io/p/XPShop/">here.</a>
+## Download from GitHub Releases
+
+  - Download the latest verified `XPShops.phar` from the [GitHub Releases](https://github.com/thebigcrafter/XPShop/releases) page.
   - Move it to PocketMine plugin folder.
   - Restart the server.
 ## Using oh-my-pmmp
@@ -57,9 +60,10 @@ composer install
 composer run analyse
 ```
 
-Poggit remains the packaging path for the plugin. DevTools is used by the
-packaging environment to assemble and validate the PHAR; this guide does not
-copy a builder revision that would become stale.
+The repository keeps a Poggit manifest for its declared virion dependencies.
+The maintained release path uses DevTools to assemble and validate the PHAR;
+this guide names the tool without copying a builder revision that would become
+stale.
 
 # License
 Copyright (c) tobydev27. All rights reserved.

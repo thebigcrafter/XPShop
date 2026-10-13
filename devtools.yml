@@ -6,4 +6,4 @@ virions:
   - name: libMCUnicodeChars
     version: ^2.0.0
   - name: libPiggyEconomy
-    version: ^3.0.2
+    version: ^3.0.4
