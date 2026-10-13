@@ -3,7 +3,7 @@ parameters:
     paths:
         - src
     scanDirectories:
-        - vendor/pocketmine/pocketmine-mp/src
-        - vendor/pocketmine/pocketmine-mp/generated
+        - vendor/axolotl-pm/pocketmine-mp/src
+        - vendor/axolotl-pm/pocketmine-mp/generated
     scanFiles:
         - stubs/ThirdParty.php
