@@ -57,7 +57,11 @@ class Main extends PluginBase {
 		$this->saveDefaultConfig();
 		HConfig::verifyConfigVersion($this->getConfig(), "1.0.0");
 		libPiggyEconomy::init();
-		$this->economyProvider = libPiggyEconomy::getProvider($this->getConfig()->get("economy"));
+		$economyConfig = $this->getConfig()->get("economy", []);
+		if (!is_array($economyConfig)) {
+			throw new \UnexpectedValueException("The economy configuration must be a map.");
+		}
+		$this->economyProvider = libPiggyEconomy::getProvider($economyConfig);
 	}
 
 	public function getEconomyProvider(): EconomyProvider {
