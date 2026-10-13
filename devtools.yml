@@ -1,9 +1,1 @@
-virions:
-  - name: pmforms
-    version: ^2.1.0
-  - name: Hydrogen
-    version: ^1.1.4
-  - name: libMCUnicodeChars
-    version: ^2.0.0
-  - name: libPiggyEconomy
-    version: ^3.0.4
+import-poggit-libraries: false

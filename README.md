@@ -20,13 +20,13 @@
 
 # Installation
 
-XPShop targets PocketMine-MP API 5 and requires the virions declared by the
-Poggit manifest: [pmforms](https://github.com/dktapps-pm-pl/pmforms),
+XPShop targets PocketMine-MP API 5 and bundles the virions declared by its
+locked Composer dependencies: [pmforms](https://github.com/thebigcrafter/pmforms),
 [Hydrogen](https://github.com/thebigcrafter/Hydrogen),
 [libMCUnicodeChars](https://github.com/thebigcrafter/libMCUnicodeChars) and
 [libPiggyEconomy](https://github.com/thebigcrafter/libPiggyEconomy). The
-thebigcrafter fork contains the standalone-packaging fix for the built-in
-provider factory. Choose and
+thebigcrafter forks contain the standalone-packaging fixes used by this
+repository. Choose and
 install a supported economy provider before using the shop. The default
 configuration selects BedrockEconomy; EconomyAPI and the built-in XP provider
 are also documented in `resources/config.yml`.
@@ -53,17 +53,18 @@ and should not be changed manually.
 
 # Development
 
-The repository keeps a locked Composer development setup for PHPStan. Run:
+The repository keeps a locked Composer setup for its runtime virions and
+PHPStan. Run:
 
 ```shell
 composer install
 composer run analyse
 ```
 
-The repository keeps a Poggit manifest for its declared virion dependencies.
-The maintained release path uses DevTools to assemble and validate the PHAR;
-this guide names the tool without copying a builder revision that would become
-stale.
+The repository keeps a Poggit manifest for compatibility with its historical
+build service. The maintained release path uses DevTools to assemble and
+validate the PHAR; `devtools.yml` disables duplicate Poggit library imports so
+the reviewed Composer lockfile remains authoritative.
 
 # License
 Copyright (c) tobydev27. All rights reserved.
