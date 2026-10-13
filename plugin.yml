@@ -1,6 +1,6 @@
 name: XPShops
 authors: [tobydev27, thebigcrafter]
-version: 2.1.0
+version: 2.1.1
 description: Buy and sell XP
 api: [5.0.0]
 main: tobydev27\XPShop\Main
@@ -14,4 +14,4 @@ commands:
 permissions:
   xpshop.cmd:
     description: Allow players to use XPShop command
-    default: op
+    default: true

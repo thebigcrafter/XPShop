@@ -41,8 +41,9 @@ install XPShop latest
 # Usage and configuration
 
 Run `/xpshop` in game to open the buy/sell form. The `xpshop.cmd` permission
-defaults to operator. Console senders receive the configured console message
-instead of a form. After the first start, edit
+is available to all players by default; server administrators can restrict it
+through the permission system when needed. Console senders receive the
+configured console message instead of a form. After the first start, edit
 `plugin_data/XPShop/config.yml` to set prices, form labels, messages and the
 `economy.provider` value. The `config-version` field is managed by the plugin
 and should not be changed manually.
