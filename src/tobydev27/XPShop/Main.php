@@ -133,7 +133,7 @@ class Main extends PluginBase {
 			$form = new CustomForm(
 				TextFormat::colorize($this->replace($this->configString("buy_title"))),
 				[
-					new Slider("buy_slider_label", TextFormat::colorize($this->replace($this->configString("buy_slider_label"))), 0, $max - $player->getXpManager()->getXpLevel())
+					new Slider("buy_slider_label", TextFormat::colorize($this->replace($this->configString("buy_slider_label"))), 0, $max)
 				],
 				function (Player $player, CustomFormResponse $response): void {
 					$xp = $this->responseNumber($response, "buy_slider_label");
