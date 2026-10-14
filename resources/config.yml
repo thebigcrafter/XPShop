@@ -30,5 +30,5 @@ transactionFailed: "Transaction failed!"
 
 ##### DANGER ZONE #####
 # Do not change this (Only for internal use)!
-config-version: "1.0.0"
+config-version: "2.1.5"
 #######################

@@ -55,7 +55,7 @@ class Main extends PluginBase {
 	protected function onEnable(): void {
 		Hydrogen::checkForUpdates($this);
 		$this->saveDefaultConfig();
-		HConfig::verifyConfigVersion($this->getConfig(), "1.0.0");
+		HConfig::verifyConfigVersion($this->getConfig(), "2.1.5");
 		EcoAPI::init();
 		$economyConfig = $this->getConfig()->get("economy", []);
 		if (!is_array($economyConfig)) {
