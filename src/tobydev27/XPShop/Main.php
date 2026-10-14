@@ -127,8 +127,9 @@ class Main extends PluginBase {
 	private function buyForm(Player $player): void {
 		$this->getEconomyProvider()->getMoney($player, function (float|int $balance) use ($player): void {
 			$attribute = (int) AttributeFactory::getInstance()->mustGet(Attribute::EXPERIENCE_LEVEL)->getMaxValue();
-			$result = (int) floor($balance / $this->configNumber("xpPriceWhenBuy"));
-			$max = ($result > $attribute) ? $attribute : $result;
+			$affordableLevels = (int) floor($balance / $this->configNumber("xpPriceWhenBuy"));
+			$remainingLevelCapacity = max(0, $attribute - $player->getXpManager()->getXpLevel());
+			$max = min($affordableLevels, $remainingLevelCapacity);
 			$form = new CustomForm(
 				TextFormat::colorize($this->replace($this->configString("buy_title"))),
 				[
