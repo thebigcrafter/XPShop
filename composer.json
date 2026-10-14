@@ -23,21 +23,22 @@
             "type": "vcs",
             "url": "https://github.com/axolotl-pm/PocketMine-MP",
             "no-api": true
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/NhanAZ-Libraries/EcoAPI",
+            "no-api": true
         }
     ],
     "require": {
         "dktapps/pmforms": "^2.1.0",
+        "nhanaz/ecoapi": "dev-main#23d9d5e5e86c8461664b282d2241febb4b4d2c08",
         "thebigcrafter/hydrogen": "1.1.4",
         "tobydev27/libmcunicodechars": "2.0.1"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.1",
         "axolotl-pm/pocketmine-mp": "5.49.1"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "NhanAZ\\EcoAPI\\": "virions/EcoAPI/src/NhanAZ/EcoAPI/"
-        }
     },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse -c phpstan.neon.dist"
