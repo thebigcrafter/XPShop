@@ -21,11 +21,6 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/thebigcrafter/libPiggyEconomy",
-            "no-api": true
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/axolotl-pm/PocketMine-MP",
             "no-api": true
         }
@@ -33,12 +28,16 @@
     "require": {
         "dktapps/pmforms": "^2.1.0",
         "thebigcrafter/hydrogen": "1.1.4",
-        "tobydev27/libmcunicodechars": "2.0.1",
-        "dapigguy/libpiggyeconomy": "3.0.4"
+        "tobydev27/libmcunicodechars": "2.0.1"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.1",
         "axolotl-pm/pocketmine-mp": "5.49.1"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NhanAZ\\EcoAPI\\": "virions/EcoAPI/src/NhanAZ/EcoAPI/"
+        }
     },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse -c phpstan.neon.dist"

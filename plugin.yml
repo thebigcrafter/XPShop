@@ -4,7 +4,7 @@ version: 2.1.4
 description: Buy and sell XP
 api: [5.0.0]
 main: tobydev27\XPShop\Main
-softdepend: ["BedrockEconomy", "EconomyAPI"]
+softdepend: ["SimpleEconomy", "BedrockEconomy", "EconomyAPI"]
 
 commands:
   xpshop:

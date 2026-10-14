@@ -22,15 +22,15 @@ declare(strict_types=1);
 
 namespace tobydev27\XPShop;
 
-use DaPigGuy\libPiggyEconomy\exceptions\MissingProviderDependencyException;
-use DaPigGuy\libPiggyEconomy\exceptions\UnknownProviderException;
-use DaPigGuy\libPiggyEconomy\libPiggyEconomy;
-use DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
 use dktapps\pmforms\CustomForm;
 use dktapps\pmforms\CustomFormResponse;
 use dktapps\pmforms\element\Slider;
 use dktapps\pmforms\MenuForm;
 use dktapps\pmforms\MenuOption;
+use NhanAZ\EcoAPI\EconomyProvider;
+use NhanAZ\EcoAPI\EcoAPI;
+use NhanAZ\EcoAPI\exception\MissingProviderDependencyException;
+use NhanAZ\EcoAPI\exception\UnknownProviderException;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Attribute;
@@ -56,12 +56,16 @@ class Main extends PluginBase {
 		Hydrogen::checkForUpdates($this);
 		$this->saveDefaultConfig();
 		HConfig::verifyConfigVersion($this->getConfig(), "1.0.0");
-		libPiggyEconomy::init();
+		EcoAPI::init();
 		$economyConfig = $this->getConfig()->get("economy", []);
 		if (!is_array($economyConfig)) {
 			throw new \UnexpectedValueException("The economy configuration must be a map.");
 		}
-		$this->economyProvider = libPiggyEconomy::getProvider($economyConfig);
+		$provider = $economyConfig["provider"] ?? "simpleeconomy";
+		if (!is_string($provider) || $provider === "") {
+			throw new \UnexpectedValueException("The economy provider must be a non-empty string.");
+		}
+		$this->economyProvider = EcoAPI::getProvider($provider);
 	}
 
 	public function getEconomyProvider(): EconomyProvider {
@@ -115,9 +119,14 @@ class Main extends PluginBase {
 				} else {
 					$xp = $this->responseNumber($response, "sell_slider_label");
 					$money = $xp * $this->configNumber("xpPriceWhenSell");
-					$player->getXpManager()->subtractXpLevels((int) floor($xp));
-					$this->getEconomyProvider()->giveMoney($player, (int) $money);
-					$player->sendMessage(TextFormat::colorize($this->replace($this->configString("sellSuccess"))));
+					$this->getEconomyProvider()->addMoney($player, (int) $money, function (bool $success) use ($player, $xp): void {
+						if (!$success) {
+							$player->sendMessage(TextFormat::colorize($this->replace($this->configString("transactionFailed"))));
+							return;
+						}
+						$player->getXpManager()->subtractXpLevels((int) floor($xp));
+						$player->sendMessage(TextFormat::colorize($this->replace($this->configString("sellSuccess"))));
+					});
 				}
 			}
 		);
@@ -141,9 +150,14 @@ class Main extends PluginBase {
 						$player->sendMessage(TextFormat::colorize($this->replace($this->configString("moneyTooLow"))));
 					} else {
 						$money = $xp * $this->configNumber("xpPriceWhenBuy");
-						$this->getEconomyProvider()->takeMoney($player, (int) $money);
-						$player->getXpManager()->addXpLevels((int) floor($xp));
-						$player->sendMessage(TextFormat::colorize($this->replace($this->configString("buySuccess"))));
+						$this->getEconomyProvider()->takeMoney($player, (int) $money, function (bool $success) use ($player, $xp): void {
+							if (!$success) {
+								$player->sendMessage(TextFormat::colorize($this->replace($this->configString("transactionFailed"))));
+								return;
+							}
+							$player->getXpManager()->addXpLevels((int) floor($xp));
+							$player->sendMessage(TextFormat::colorize($this->replace($this->configString("buySuccess"))));
+						});
 					}
 				}
 			);

@@ -12,6 +12,6 @@ projects:
       version: ^1.1.4
     - src: thebigcrafter/libMCUnicodeChars/libMCUnicodeChars
       version: ^2.0.0
-    - src: thebigcrafter/libPiggyEconomy/libPiggyEconomy
-      version: ^3.0.4
+    - src: NhanAZ/EcoAPI/EcoAPI
+      version: ^1.0.0
 ...

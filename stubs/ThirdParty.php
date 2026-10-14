@@ -2,37 +2,6 @@
 
 declare(strict_types=1);
 
-namespace DaPigGuy\libPiggyEconomy;
-
-use DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
-
-final class libPiggyEconomy {
-	public static function init() : void {}
-
-	public static function getProvider(mixed $config) : EconomyProvider {
-		return new EconomyProvider();
-	}
-}
-
-namespace DaPigGuy\libPiggyEconomy\exceptions;
-
-class MissingProviderDependencyException extends \Exception {}
-class UnknownProviderException extends \Exception {}
-
-namespace DaPigGuy\libPiggyEconomy\providers;
-
-use pocketmine\player\Player;
-
-class EconomyProvider {
-	public function giveMoney(Player $player, int $amount) : void {}
-
-	public function takeMoney(Player $player, int $amount) : void {}
-
-	public function getMoney(Player $player, \Closure $callback) : void {
-		$callback(0);
-	}
-}
-
 namespace dktapps\pmforms;
 
 use pocketmine\form\Form;

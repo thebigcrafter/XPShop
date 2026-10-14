@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5bcdac5bd1cf703e0117a8eeeda9a29b",
+    "content-hash": "0a44d6dfd64b5385ad64e310ab74e812",
     "packages": [
         {
             "name": "adhocore/json-comment",
@@ -407,37 +407,6 @@
                 }
             ],
             "time": "2026-09-12T10:28:18+00:00"
-        },
-        {
-            "name": "dapigguy/libpiggyeconomy",
-            "version": "3.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thebigcrafter/libPiggyEconomy",
-                "reference": "db7a840c4a72d21f43fb59766e44e5eb6cc32ede"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thebigcrafter/libPiggyEconomy/zipball/db7a840c4a72d21f43fb59766e44e5eb6cc32ede",
-                "reference": "db7a840c4a72d21f43fb59766e44e5eb6cc32ede",
-                "shasum": ""
-            },
-            "require": {
-                "pocketmine/pocketmine-mp": "^5.0.0"
-            },
-            "type": "library",
-            "extra": {
-                "virion": {
-                    "spec": "3.0",
-                    "namespace-root": "DaPigGuy\\libPiggyEconomy"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src"
-                ]
-            },
-            "time": "2026-10-13T08:37:30+00:00"
         },
         {
             "name": "dktapps/pmforms",

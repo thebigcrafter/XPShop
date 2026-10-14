@@ -22,9 +22,11 @@ messages_console: "You must be a player to use this command!"
 # Economy Options
 economy:
   # Economy provider to use
-  # Supported options:  "bedrockeconomy", "economyapi", "xp"
+  # Supported options:  "simpleeconomy", "bedrockeconomy", "economyapi", "xp"
   # The "xp" provider is built in and needs no external economy plugin.
-  provider: bedrockeconomy
+  provider: simpleeconomy
+
+transactionFailed: "Transaction failed!"
 
 ##### DANGER ZONE #####
 # Do not change this (Only for internal use)!
