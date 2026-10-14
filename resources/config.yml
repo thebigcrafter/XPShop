@@ -23,6 +23,7 @@ messages_console: "You must be a player to use this command!"
 economy:
   # Economy provider to use
   # Supported options:  "bedrockeconomy", "economyapi", "xp"
+  # The "xp" provider is built in and needs no external economy plugin.
   provider: bedrockeconomy
 
 ##### DANGER ZONE #####

@@ -27,9 +27,11 @@ locked Composer dependencies: [pmforms](https://github.com/thebigcrafter/pmforms
 [libPiggyEconomy](https://github.com/thebigcrafter/libPiggyEconomy). The
 thebigcrafter forks contain the standalone-packaging fixes used by this
 repository. Choose and
-install a supported economy provider before using the shop. The default
-configuration selects BedrockEconomy; EconomyAPI and the built-in XP provider
-are also documented in `resources/config.yml`.
+choose a supported economy provider before using the shop. `bedrockeconomy` and
+`economyapi` require the corresponding compatible economy plugin to be
+installed and enabled; `xp` is built in and does not require an external
+economy plugin. The default configuration selects BedrockEconomy, and all
+supported provider names are documented in `resources/config.yml`.
 
 ## Download from GitHub Releases
 
