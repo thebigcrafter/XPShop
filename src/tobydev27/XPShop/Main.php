@@ -27,10 +27,10 @@ use dktapps\pmforms\CustomFormResponse;
 use dktapps\pmforms\element\Slider;
 use dktapps\pmforms\MenuForm;
 use dktapps\pmforms\MenuOption;
-use NhanAZ\EcoAPI\EconomyProvider;
-use NhanAZ\EcoAPI\EcoAPI;
-use NhanAZ\EcoAPI\exception\MissingProviderDependencyException;
-use NhanAZ\EcoAPI\exception\UnknownProviderException;
+use AxolotlBucketLabs\EconomyProviderAPI\EconomyProvider;
+use AxolotlBucketLabs\EconomyProviderAPI\EconomyProviderAPI;
+use AxolotlBucketLabs\EconomyProviderAPI\exception\MissingProviderDependencyException;
+use AxolotlBucketLabs\EconomyProviderAPI\exception\UnknownProviderException;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Attribute;
@@ -56,7 +56,7 @@ class Main extends PluginBase {
 		Hydrogen::checkForUpdates($this);
 		$this->saveDefaultConfig();
 		HConfig::verifyConfigVersion($this->getConfig(), "2.1.5");
-		EcoAPI::init();
+		EconomyProviderAPI::init();
 		$economyConfig = $this->getConfig()->get("economy", []);
 		if (!is_array($economyConfig)) {
 			throw new \UnexpectedValueException("The economy configuration must be a map.");
@@ -65,7 +65,7 @@ class Main extends PluginBase {
 		if (!is_string($provider) || $provider === "") {
 			throw new \UnexpectedValueException("The economy provider must be a non-empty string.");
 		}
-		$this->economyProvider = EcoAPI::getProvider($provider);
+		$this->economyProvider = EconomyProviderAPI::getProvider($provider);
 	}
 
 	public function getEconomyProvider(): EconomyProvider {

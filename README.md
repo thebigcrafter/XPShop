@@ -24,7 +24,7 @@ XPShop targets PocketMine-MP API 5 and bundles the virions declared by its
 locked Composer dependencies: [pmforms](https://github.com/thebigcrafter/pmforms),
 [Hydrogen](https://github.com/thebigcrafter/Hydrogen),
 [libMCUnicodeChars](https://github.com/thebigcrafter/libMCUnicodeChars) and
-[EcoAPI](https://github.com/NhanAZ-Libraries/EcoAPI). Choose a supported
+[EconomyProviderAPI](https://github.com/AxolotlBucketLabs/EconomyProviderAPI). Choose a supported
 economy provider before using the shop. `simpleeconomy`, `bedrockeconomy` and
 `economyapi` require the corresponding compatible economy plugin to be
 installed and enabled; `xp` is built in and does not require an external
